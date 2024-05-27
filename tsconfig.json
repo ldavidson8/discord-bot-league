@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    /* Base configuration. */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "ES2022",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "newLine": "lf",
+
+    /* Strictness */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "noEmitOnError": true,
+    "useDefineForClassFields": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Transipling with TS */
+    "moduleResolution": "NodeNext",
+    "module": "Node16",
+    "outDir": "./dist/" /* Specify an output folder for all emitted files. */,
+    "sourceMap": true,
+
+    /* Node */
+    "lib": ["es2022"],
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["./src/**/*", "commands", "env.ts", "server.ts"],
+  "exclude": ["node_modules"]
+}
