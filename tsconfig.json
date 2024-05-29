@@ -25,7 +25,7 @@
 
     /* Transipling with TS */
     "moduleResolution": "NodeNext",
-    "module": "Node16",
+    "module": "NodeNext",
     "outDir": "./dist/" /* Specify an output folder for all emitted files. */,
     "sourceMap": true,
 
@@ -37,6 +37,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./src/**/*", "commands", "env.ts", "server.ts"],
+  "include": ["src"],
   "exclude": ["node_modules"]
 }

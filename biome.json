@@ -7,8 +7,19 @@
     "enabled": true,
     "lineWidth": 120,
     "indentStyle": "tab",
+    "indentWidth": 2,
     "lineEnding": "lf",
     "ignore": []
+  },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "always",
+      "bracketSameLine": false,
+      "bracketSpacing": true,
+      "quoteProperties": "asNeeded",
+      "semicolons": "always",
+      "trailingComma": "all"
+    }
   },
   "linter": {
     "enabled": true,

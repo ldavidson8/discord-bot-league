@@ -1,9 +1,9 @@
 import type { ClientEvents } from "discord.js";
 
 export type Event<Key extends keyof ClientEvents = keyof ClientEvents> = {
-  name: Key;
+	name: Key;
 
-  once?: boolean;
+	once?: boolean;
 
-  execute(...args: ClientEvents[Key]): Promise<void> | void;
+	execute(...args: ClientEvents[Key]): Promise<void> | void;
 };

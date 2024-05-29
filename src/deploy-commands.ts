@@ -1,41 +1,49 @@
-import { REST, Routes } from "discord.js";
+import {
+	REST,
+	Routes,
+	type RESTPostAPIApplicationCommandsJSONBody,
+	type RESTPostAPIApplicationGuildCommandsJSONBody,
+	type RESTPutAPIApplicationCommandsJSONBody,
+	type RESTPutAPIApplicationGuildCommandsJSONBody,
+} from "discord.js";
 import { env } from "./env.js";
-import fs from "node:fs";
 import { fileURLToPath } from "node:url";
-import path from "node:path";
+import type { Command } from "./structures/command.js";
+import { loadStructures } from "./misc/util.js";
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-const commands: any[] = [];
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const commandsPath = path.join(__dirname, "commands");
-const commandFiles = fs
-  .readdirSync(commandsPath)
-  .filter((file) => file.endsWith(".js"));
+const commands: RESTPostAPIApplicationCommandsJSONBody[] | RESTPostAPIApplicationGuildCommandsJSONBody[] = [];
 
-for (const commandFile of commandFiles) {
-  const command = await import(`./commands/${commandFile}`);
-  commands.push(command.data);
+const commandFolderPath = fileURLToPath(new URL("commands", import.meta.url));
+const commandFiles: Command[] = await loadStructures(commandFolderPath, ["data", "execute"]);
+for (const command of commandFiles) {
+	console.log(command);
+	commands.push(command.data);
 }
 
-// Construct and prepare instance of REST module
 const rest = new REST().setToken(env.DISCORD_TOKEN);
 
-// deploy commands
 (async () => {
-  try {
-    console.log("Started refreshing application (/) commands.");
+	try {
+		console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
-    await rest.put(
-      Routes.applicationGuildCommands(env.CLIENT_ID, env.GUILD_ID),
-      {
-        body: commands,
-      }
-    );
+		let data: RESTPutAPIApplicationCommandsJSONBody[] | RESTPutAPIApplicationGuildCommandsJSONBody[] = [];
 
-    console.log(
-      `Successfully reloaded ${commands.length} application commands.`
-    );
-  } catch (error) {
-    console.error(error);
-  }
+		if (env.GUILD_ID) {
+			data = (await rest.put(Routes.applicationGuildCommands(env.CLIENT_ID, env.GUILD_ID), {
+				body: commands,
+			})) as RESTPutAPIApplicationGuildCommandsJSONBody[];
+		} else {
+			data = (await rest.put(Routes.applicationCommands(env.CLIENT_ID), {
+				body: commands,
+			})) as RESTPutAPIApplicationCommandsJSONBody[];
+		}
+
+		console.log(
+			`Successfully reloaded ${data.length} application (/) commands ${
+				env.GUILD_ID ? `in guild ${env.GUILD_ID}` : ""
+			}.`,
+		);
+	} catch (error) {
+		console.error(error);
+	}
 })();

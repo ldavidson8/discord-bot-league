@@ -1,23 +1,21 @@
 import type {
-  CommandInteraction,
-  PermissionResolvable,
-  RESTPostAPIApplicationCommandsJSONBody,
-  RESTPostAPIApplicationGuildCommandsJSONBody,
+	CommandInteraction,
+	PermissionResolvable,
+	RESTPostAPIApplicationCommandsJSONBody,
+	RESTPostAPIApplicationGuildCommandsJSONBody,
 } from "discord.js";
 
 interface CustomOptions {
-  userPermissions?: PermissionResolvable[];
-  botPermissions?: PermissionResolvable[];
-  category?: string;
-  cooldown?: number;
+	userPermissions?: PermissionResolvable[];
+	botPermissions?: PermissionResolvable[];
+	category?: string;
+	cooldown?: number;
 }
 
 export type Command = {
-  data:
-    | RESTPostAPIApplicationCommandsJSONBody
-    | RESTPostAPIApplicationGuildCommandsJSONBody;
+	data: RESTPostAPIApplicationCommandsJSONBody | RESTPostAPIApplicationGuildCommandsJSONBody;
 
-  opt?: CustomOptions;
+	opt?: CustomOptions;
 
-  execute(interaction: CommandInteraction): Promise<void> | void;
+	execute(interaction: CommandInteraction): Promise<void> | void;
 };
